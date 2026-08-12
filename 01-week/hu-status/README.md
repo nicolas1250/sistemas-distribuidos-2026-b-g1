@@ -5,10 +5,10 @@
 # Weekly Status - Week 01
 
 <!-- CONFIG-START - must match your profile repo (username/username) CONFIG -->
-- FULL_NAME:
-- GITHUB_USER:
-- TEAM:
-- SPRINT_GOAL:
+- FULL_NAME: Nicolas Obregon Rojas
+- GITHUB_USER: nicolas1250
+- TEAM: CineSync Platform
+- SPRINT_GOAL: Notification & Ticket Service
 <!-- CONFIG-END -->
 
 ## 1. User stories worked this week
