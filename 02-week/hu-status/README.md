@@ -60,6 +60,6 @@
 - [ ] No secrets; config via environment variables
 
 ## 6. Evidence links
- ![scrum_and_kanvan](agile_scrum_kanvan.jpg)
+ ![scrum_and_kanvan](agiles_scrum_kanvan.jpg)
  ![summary_week_2](summary_week_2.jpg)
 
