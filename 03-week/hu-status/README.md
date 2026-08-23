@@ -52,4 +52,4 @@
 - [ ] No secrets; config via environment variables
 
 ## 6. Evidence links
-![week_3_summary](week_3_summary.jpg)
+![week_3_summary](Week_3_Summary.jpg)
