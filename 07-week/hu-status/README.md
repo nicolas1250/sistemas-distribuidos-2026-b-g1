@@ -56,4 +56,4 @@
 - [Repository naming and terminology standardization](https://github.com/code-corhuila/csp-docs/commit/241d15e)
 - [UML diagram index](../08-uml/diagram-index.md)
 - [Microservices service catalog](../09-microservices/service-catalog.md)
-- [diagram_week_7](inter_service_communication.png)
+- [diagram_week_7](Inter_service_communication.png)
