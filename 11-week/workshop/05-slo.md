@@ -105,17 +105,3 @@ sum(rate(ticketing_fulfillment_requests_total{operation="inbox_process"}[30d]))
 On-call → Tech Lead → Engineering Manager → CTO (if 100% consumed >24h)
 
 ---
-
-## 4. Reflection Entry for CP6
-
-**What I learned in this checkpoint that I didn't know before:**
-
-I learned the difference between an SLI (a measurable ratio), an SLO (a target on that ratio over a time window), and the error budget (the inverse — how much failure we can absorb). The key insight: **error budget is a shared currency between product and engineering**. It quantifies "how much unreliability we can afford before we must stop shipping features." I also learned that burn-rate alerting (CP7) is derived directly from the error budget math, not from arbitrary thresholds.
-
-**How it applies to my project, with a concrete example from my services:**
-
-For `ticketing-fulfillment-service`, the Availability SLO (99.5%) means: of every 240k `BookingConfirmed` events/month, at most 1,200 can fail to produce a `TicketIssued`. The Latency SLO (p95 ≤ 5s) uses the histogram from CP4 across all 5 operations (`inbox_process` through `event_publish`). The business SLO (99% issuance success) is stricter because a failed email or PDF store still counts as "ticket not delivered" from the user's perspective. The PromQL for each SLI directly references `ticketing_fulfillment_requests_total` and `ticketing_fulfillment_request_duration_seconds` with the `operation` and `outcome` labels I defined.
-
-**What I would implement first in my team's real code and what stops us today:**
-
-First, I'd add the three SLI queries as Grafana dashboard panels and recording rules in Prometheus (e.g., `slo:ticketing_availability:ratio_30d`). The blocker: **no Prometheus stack in QA yet** — the platform team hasn't deployed it. Also, the Spring Boot service exposes `/actuator/prometheus` but with only default JVM metrics; the custom `ticketing_fulfillment_*` metrics from CP4 don't exist in production code. We need: (1) Micrometer `Timer`/`Counter` instrumentation in `BookingConfirmedConsumer` and `TicketService`, (2) Prometheus + Grafana in QA, (3) recording rules for the SLI ratios so dashboards and alerts are fast.
