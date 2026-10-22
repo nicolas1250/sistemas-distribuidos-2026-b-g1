@@ -1,0 +1,83 @@
+groups:
+  - name: ticketing-fulfillment-slo-availability
+    interval: 30s
+    rules:
+      # Fast burn rate alert: 14.4x over 1 hour (consumes 2% of 30d budget)
+      # Triggers when error rate is 14.4 * (0.5% / 30d) = 0.72% error rate sustained for 1h
+      - alert: TicketingFulfillmentAvailabilityFastBurn
+        expr: |
+          (
+            sum(rate(ticketing_fulfillment_requests_total{operation=~"inbox_process|event_publish",outcome="error"}[1h]))
+            /
+            sum(rate(ticketing_fulfillment_requests_total{operation="inbox_process"}[1h]))
+          ) > 14.4 * 0.005
+        for: 5m
+        labels:
+          severity: critical
+          team: ticketing
+          slo: availability
+          burn_rate: "14.4"
+          window: "1h"
+        annotations:
+          summary: "Ticketing fulfillment availability fast burn (14.4x) - 2% of 30d error budget consumed in 1h"
+          description: |
+            Error rate for ticketing fulfillment (inbox_process + event_publish) exceeds 14.4x the SLO budget rate.
+            Current error rate: {{ printf "%.4f" (sum(rate(ticketing_fulfillment_requests_total{operation=~"inbox_process|event_publish",outcome="error"}[1h])) / sum(rate(ticketing_fulfillment_requests_total{operation="inbox_process"}[1h]))) }}
+            SLO budget rate: 0.5% (99.5% availability over 30d)
+            This alert consumes ~2% of the monthly error budget per hour of firing.
+          runbook_url: "https://github.com/nicolas1250/sistemas-distribuidos-2026-b-g1/blob/main/11-week/workshop/07-runbook.md"
+          dashboard_url: "https://grafana.cinesync.internal/d/ticketing-slo/ticketing-fulfillment-slo?orgId=1"
+
+      # Slow burn rate alert: 6x over 6 hours (consumes 5% of 30d budget)
+      # Triggers when error rate is 6 * (0.5% / 30d) = 0.3% error rate sustained for 6h
+      - alert: TicketingFulfillmentAvailabilitySlowBurn
+        expr: |
+          (
+            sum(rate(ticketing_fulfillment_requests_total{operation=~"inbox_process|event_publish",outcome="error"}[6h]))
+            /
+            sum(rate(ticketing_fulfillment_requests_total{operation="inbox_process"}[6h]))
+          ) > 6 * 0.005
+        for: 30m
+        labels:
+          severity: warning
+          team: ticketing
+          slo: availability
+          burn_rate: "6"
+          window: "6h"
+        annotations:
+          summary: "Ticketing fulfillment availability slow burn (6x) - 5% of 30d error budget consumed in 6h"
+          description: |
+            Error rate for ticketing fulfillment (inbox_process + event_publish) exceeds 6x the SLO budget rate over 6 hours.
+            Current error rate: {{ printf "%.4f" (sum(rate(ticketing_fulfillment_requests_total{operation=~"inbox_process|event_publish",outcome="error"}[6h])) / sum(rate(ticketing_fulfillment_requests_total{operation="inbox_process"}[6h]))) }}
+            SLO budget rate: 0.5% (99.5% availability over 30d)
+            This alert consumes ~5% of the monthly error budget per 6 hours of firing.
+          runbook_url: "https://github.com/nicolas1250/sistemas-distribuidos-2026-b-g1/blob/main/11-week/workshop/07-runbook.md"
+          dashboard_url: "https://grafana.cinesync.internal/d/ticketing-slo/ticketing-fulfillment-slo?orgId=1"
+
+      # Multi-window combined alert (fast OR slow) - for paging
+      - alert: TicketingFulfillmentAvailabilityBurnRate
+        expr: |
+          (
+            sum(rate(ticketing_fulfillment_requests_total{operation=~"inbox_process|event_publish",outcome="error"}[1h]))
+            /
+            sum(rate(ticketing_fulfillment_requests_total{operation="inbox_process"}[1h]))
+          ) > 14.4 * 0.005
+          OR
+          (
+            sum(rate(ticketing_fulfillment_requests_total{operation=~"inbox_process|event_publish",outcome="error"}[6h]))
+            /
+            sum(rate(ticketing_fulfillment_requests_total{operation="inbox_process"}[6h]))
+          ) > 6 * 0.005
+        for: 2m
+        labels:
+          severity: critical
+          team: ticketing
+          slo: availability
+          burn_rate: "multi"
+        annotations:
+          summary: "Ticketing fulfillment availability burn rate alert (fast or slow)"
+          description: |
+            Combined burn rate alert for ticketing fulfillment availability SLO (99.5% over 30d).
+            Check which window triggered: 1h (14.4x) or 6h (6x).
+            Runbook: https://github.com/nicolas1250/sistemas-distribuidos-2026-b-g1/blob/main/11-week/workshop/07-runbook.md
+          runbook_url: "https://github.com/nicolas1250/sistemas-distribuidos-2026-b-g1/blob/main/11-week/workshop/07-runbook.md"
