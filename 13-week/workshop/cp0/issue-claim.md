@@ -1,2 +1,0 @@
-The boundary is the HTTP hop from `csp-api-gateway` (NGINX, port 8000) to `csp-ticketing-api` (port 8084, base path `/api/v1/ticketing`), including `GET /me/tickets`, `GET /me/notifications`, the health routes and the `POST /internal/tickets/{ticketId}/pdf` route that exists in the code.
-It was chosen because Ticketing issues QR/PDF tickets from `BookingConfirmed` and today the service does not validate the access token yet (`csp-ticketing-api#12`), so this hop is where a forged identity would first enter.
