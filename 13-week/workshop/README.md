@@ -4,10 +4,11 @@
 - TEAM: CineSync Platform
 - DOCS_REPO: https://github.com/code-corhuila/csp-docs
 - BOUNDARY: csp-api-gateway to csp-ticketing-api (Ticketing & Fulfillment, port 8084)
-- CLAIM_ISSUE: - CLAIM_ISSUE: https://github.com/code-corhuila/csp-docs/issues/279
+- CLAIM_ISSUE: https://github.com/code-corhuila/csp-docs/issues/279
 - REFLECTION_DOC: https://docs.google.com/document/d/14d7Z_LXkGwlx7ByV7hGZwrmSRLaZMFrEBqMdDeHG45s/edit?tab=t.0
 - LIBRARY_BOOK: Cano, Jeimy J. Inseguridad de la informacion: una vision estrategica, 1st ed., 2013, call number 005.8 C156I
-- LIBRARY_RECORD_TIME: <HH:MM of your library record, fill in CP2>
+- LIBRARY_RECORD_TIME: 20:00 (2026-10-28)
+- STORIES: https://github.com/code-corhuila/csp-docs/issues/291, https://github.com/code-corhuila/csp-docs/issues/292, https://github.com/code-corhuila/csp-docs/issues/293
 <!-- CONFIG-END -->
 
 # Week 13 Workshop - Threat modeling
