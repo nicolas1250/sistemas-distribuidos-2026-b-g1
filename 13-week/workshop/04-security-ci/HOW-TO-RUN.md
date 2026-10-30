@@ -13,8 +13,20 @@ Use `BASE_URL` to point at another host. The test sends `GET /api/v1/ticketing/m
 
 ## Real output (CP8)
 
-<paste the console output here in CP8>
+Run on 2026-10-30 against the real service built from `develop` of `csp-ticketing-api` (commit `40afbb3`, includes `csp-ticketing-api#36`). Setup, all local and disposable: PostgreSQL 16 and RabbitMQ 3.13 in Docker, the 9 migrations of `csp-ticketing-db` (`develop`, `082e693`) applied with Flyway, a test RSA key as `JWT_PUBLIC_KEY_FILE`, and `mvn spring-boot:run` on the `app` module (port 8084).
+
+```text
+PASS GET /me/tickets without Authorization -> HTTP 401 (expected 401)
+PASS GET /me/tickets with an alg=none token -> HTTP 401 (expected 401)
+RESULT: PASS
+```
+
+The test passes because `develop` now validates the token (`SecurityConfiguration`). It was written against the state of 2026-10-28, when the service did not validate the JWT yet; I did not run it against that older state. The same service answers `401` to `POST /internal/tickets/{ticketId}/pdf` without a token (`curl`, HTTP 401), which is the first part of criterion 1 of #293.
 
 ## security.yml validation (CP8)
 
-<paste the actionlint result here in CP8>
+Checked with `rhysd/actionlint:1.7.7` (Docker) on 2026-10-30:
+
+```text
+actionlint security.yml  -> no output, exit code 0
+```
