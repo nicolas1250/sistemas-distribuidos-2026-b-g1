@@ -8,7 +8,7 @@
 - REFLECTION_DOC: https://docs.google.com/document/d/14d7Z_LXkGwlx7ByV7hGZwrmSRLaZMFrEBqMdDeHG45s/edit?tab=t.0
 - LIBRARY_BOOK: Cano, Jeimy J. Inseguridad de la informacion: una vision estrategica, 1st ed., 2013, call number 005.8 C156I
 - LIBRARY_RECORD_TIME: 20:00 (2026-10-28)
-- STORIES: https://github.com/code-corhuila/csp-docs/issues/291, https://github.com/code-corhuila/csp-docs/issues/292, https://github.com/code-corhuila/csp-docs/issues/293
+- STORIES: https://github.com/code-corhuila/csp-docs/issues/291 (S, risk 9, P0), https://github.com/code-corhuila/csp-docs/issues/292 (T, risk 6, P1), https://github.com/code-corhuila/csp-docs/issues/293 (E, risk 6, P1)
 <!-- CONFIG-END -->
 
 # Week 13 Workshop - Threat modeling
